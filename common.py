@@ -11,6 +11,8 @@ LEAD_FIELDS = [
     "is_mobile", "email", "website", "website_status", "quality", "verdict", "issues",
     "pitch", "score", "rating", "reviews", "maps_url", "query",
 ]
+REVIEW_CSV = "review.csv"  # technically fine sites waiting for a visual check
+REVIEW_FIELDS = LEAD_FIELDS + ["review"]  # review: pending | promoted | dismissed
 
 
 def load_env(path: str = ".env") -> None:

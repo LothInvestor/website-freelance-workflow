@@ -57,6 +57,29 @@ Costs: the basic audit is free and takes ~1–3 s per site. `--deep` adds ~30 s 
 free quota is 25k requests/day with a key). `--visual` adds one Claude call per site with an image —
 use it on leads that already passed the basic filter.
 
+## Using it with Claude Code (recommended)
+
+The project ships two Claude Code skills that split the work 50/50: the scripts do the repetitive part
+(free, fast), Claude only steps in where judgment matters.
+
+| Command | Scripts do | Claude does |
+|---|---|---|
+| `/leads boulangerie Lyon` | Google Maps search, basic audit, scoring, dedup | Opens the sites that passed the technical checks in its browser (one small screenshot each), promotes the ones that *look* dated with a specific pitch |
+| `/prospecter 20` | Renders messages, sends emails over SMTP, logs every send, builds `whatsapp.html` | Proofreads the pitches, shows you a preview, **sends nothing until you say yes** |
+
+Sites that score "correct" in the basic audit go to `review.csv` instead of being dropped. `review.py`
+prints them one line each, so the review stays cheap:
+
+```bash
+python review.py list                         # sites waiting for a visual check
+python review.py promote <id> --pitch "..."   # looks dated → into leads.csv
+python review.py dismiss <id> ...             # looks fine → never queued again
+python review.py pitches                      # leads not contacted yet + their pitch
+python review.py set-pitch <id> "..."         # rewrite a pitch
+```
+
+You can do the review yourself with the same commands. The scripts work without Claude.
+
 ## Setup
 
 ```bash
@@ -109,6 +132,8 @@ Edit the messages in `templates/email.txt` and `templates/whatsapp.txt`. Placeho
 prospect-pilot/
 ├── lead_finder.py      # Bright Data → scored leads.csv
 ├── audit.py            # audit one website from the command line
+├── review.py           # review queue + pitch helpers (used by the skills)
+├── .claude/skills/     # /leads and /prospecter for Claude Code
 ├── outreach.py         # leads.csv → SMTP emails + whatsapp.html
 ├── common.py           # .env, phone normalisation, CSV helpers
 ├── site_audit/         # audit team: fetch, freshness, technical, seo, pagespeed, visual, judge

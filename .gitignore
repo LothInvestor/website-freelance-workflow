@@ -1,5 +1,6 @@
 .env
 leads.csv
+review.csv
 sent_log.csv
 optout.txt
 whatsapp.html

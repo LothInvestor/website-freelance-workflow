@@ -18,7 +18,8 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
 
-from common import LEAD_FIELDS, is_mobile, load_env, normalize_phone, read_csv, write_csv
+from common import (LEAD_FIELDS, REVIEW_CSV, REVIEW_FIELDS, is_mobile, load_env, normalize_phone,
+                    read_csv, write_csv)
 from site_audit import audit_site
 
 SOCIAL_DOMAINS = ("facebook.com", "instagram.com", "linktr.ee", "tiktok.com", "linkedin.com")
@@ -190,11 +191,21 @@ def main():
 
     print("[3/3] Merging into", args.out)
     existing = {l["id"]: l for l in read_csv(args.out)}
-    new = [l for l in leads if l["score"] >= args.min_score and l["id"] not in existing]
+    queue = read_csv(REVIEW_CSV)
+    known = set(existing) | {l["id"] for l in queue}
+    new = [l for l in leads if l["score"] >= args.min_score and l["id"] not in known]
     merged = list(existing.values()) + new
     merged.sort(key=lambda l: int(l["score"]), reverse=True)
     write_csv(args.out, merged, LEAD_FIELDS)
     print(f"  +{len(new)} new leads (score >= {args.min_score}), {len(merged)} total")
+
+    # Sites that pass the technical checks can still look dated: queue them for a visual review
+    # (by Claude via the /leads skill, or by you — see review.py).
+    to_review = [dict(l, review="pending") for l in leads
+                 if l["website_status"] == "audited" and l["score"] < args.min_score and l["id"] not in known]
+    if to_review:
+        write_csv(REVIEW_CSV, queue + to_review, REVIEW_FIELDS)
+        print(f"  +{len(to_review)} sites to review visually → python review.py list")
 
 
 if __name__ == "__main__":
