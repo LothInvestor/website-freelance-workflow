@@ -1,0 +1,8 @@
+.env
+leads.csv
+sent_log.csv
+optout.txt
+whatsapp.html
+*.ndjson
+gmaps*.json
+__pycache__/

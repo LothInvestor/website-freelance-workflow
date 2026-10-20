@@ -1,0 +1,1 @@
+Bonjour, je suis {sender_name}, je crée des sites internet pour les commerces de {city}. En regardant votre fiche Google Maps, j'ai remarqué que {problem}. Je peux vous préparer une maquette gratuite, sans engagement. Ça vous intéresse ? (Répondez STOP si vous ne souhaitez pas être recontacté.)

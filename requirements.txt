@@ -1,0 +1,2 @@
+# Everything runs on the standard library except the optional Claude design review (--visual).
+anthropic
