@@ -12,7 +12,7 @@ and /prospection-maquette skills). Prints one short line per lead so a review co
 
 import argparse
 
-from common import LEAD_FIELDS, REVIEW_CSV, REVIEW_FIELDS, load_env, read_csv, write_csv
+from common import LEAD_FIELDS, REVIEW_CSV, REVIEW_FIELDS, load_env, read_csv, slugify, write_csv
 from lead_finder import score
 
 LEADS_CSV = "leads.csv"
@@ -92,6 +92,7 @@ def cmd_show(args) -> None:
     for k, v in matches[0].items():
         if v:
             print(f"{k}: {v}")
+    print(f"slug: {slugify(matches[0]['name'])}  (mockup folder: maquettes/<slug>/)")
 
 
 def main():

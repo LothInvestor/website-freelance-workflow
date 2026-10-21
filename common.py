@@ -4,6 +4,7 @@ import csv
 import os
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 LEAD_FIELDS = [
@@ -13,6 +14,12 @@ LEAD_FIELDS = [
 ]
 REVIEW_CSV = "review.csv"  # technically fine sites waiting for a visual check
 REVIEW_FIELDS = LEAD_FIELDS + ["review"]  # review: pending | promoted | dismissed
+
+
+def slugify(text: str) -> str:
+    """'Boulangerie L'Artisan (Maison Dumollard)' → 'boulangerie-l-artisan-maison-dumollard' (mockup folder)."""
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
 def load_env(path: str = ".env") -> None:

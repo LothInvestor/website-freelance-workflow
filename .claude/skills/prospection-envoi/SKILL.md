@@ -13,9 +13,16 @@ Tout se lance depuis la racine du projet. Réponds à l'utilisateur en français
 
 `python review.py pitches --limit <n>` donne une ligne par lead : `id | nom | score | canaux | accroche`.
 
-Corrige uniquement les accroches maladroites (grammaire, jargon technique, ton agressif, phrase trop longue)
-avec `python review.py set-pitch <id> "<phrase>"`. La phrase suit « j'ai remarqué que … » et commence
-par « le site de <nom> ». N'invente aucun fait : reformule seulement ce qui est déjà dans l'accroche.
+Corrige uniquement les accroches maladroites (grammaire, jargon technique comme « noindex » ou
+« HTTPS », phrase trop longue) avec `python review.py set-pitch <id> "<phrase>"`. La phrase suit
+« J'ai cherché <nom> sur Google. Résultat : … », commence par « le site de <nom> » ou « un site … »,
+et fait 20 mots max. Elle reste factuelle : c'est le modèle qui porte l'émotion (les clients qui
+partent chez le voisin). N'invente aucun fait : reformule seulement ce qui est déjà dans l'accroche.
+
+Chaque message contient le lien de la maquette du lead (`{maquette}`). `outreach.py` saute les leads
+sans maquette et les liste : propose `/prospection-maquette <nom>` pour eux. Avant un envoi réel,
+`MOCKUP_BASE_URL` doit être rempli dans `.env` (adresse où le dossier `maquettes/` est publié),
+sinon le script refuse d'envoyer.
 Les « phrase générique » sont normales (commerces sans site) : laisse-les.
 
 ## 2. Aperçu

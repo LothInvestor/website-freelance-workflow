@@ -126,7 +126,11 @@ Re-running is safe: leads are deduplicated by id in `leads.csv`, and every conta
 that replied STOP in `optout.txt`.
 
 Edit the messages in `templates/email.txt` and `templates/whatsapp.txt`. Placeholders:
-`{name} {category} {city} {problem} {website} {sender_name} {sender_site} {sender_phone}`.
+`{name} {category} {city} {problem} {maquette} {website} {sender_name} {sender_site} {sender_phone}`.
+
+Every message links to the lead's mockup (`{maquette}` = `<MOCKUP_BASE_URL>/<slug>/`). Leads
+without a mockup in `maquettes/` are skipped and listed. Publish the `maquettes/` folder (e.g.
+Netlify Drop) and set `MOCKUP_BASE_URL` in `.env` before `--send`; dry runs show a local link.
 
 ## Files
 

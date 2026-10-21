@@ -21,8 +21,9 @@ plusieurs leads, et seulement à l'étape où il sert. Ne lis pas `leads.csv` en
 `python review.py show "<id ou nom>"` → garde nom, catégorie, adresse, téléphone, note, avis,
 site, `maps_url`, `issues`. Plusieurs résultats : demande lequel.
 
-Dossier de sortie : `maquettes/<slug-du-nom>/` (ignoré par git : les données prospects ne partent
-pas sur GitHub).
+Dossier de sortie : `maquettes/<slug>/`, avec le `slug` affiché par `review.py show` — c'est ce
+nom que `outreach.py` cherche pour mettre le lien dans le message (ignoré par git : les données
+prospects ne partent pas sur GitHub).
 
 ## 2. Contenu réel (selon `website_status`)
 
@@ -106,5 +107,6 @@ débordement oui/non, ce qui n'a pas pu être vérifié).
 
 Pour chaque maquette : chemin du fichier, direction choisie en une ligne, skills utilisés,
 faits « à confirmer », et ce qui manque (photos, horaires…).
-Suite possible : publier le dossier (Netlify Drop : glisser le dossier → lien) puis ajouter le
-lien dans le message avant `/prospection-envoi`.
+Suite : publier tout le dossier `maquettes/` (Netlify Drop : glisser le dossier → adresse), mettre
+cette adresse dans `MOCKUP_BASE_URL` (`.env`), puis `/prospection-envoi` : le lien
+`<MOCKUP_BASE_URL>/<slug>/` est inséré automatiquement dans le message.

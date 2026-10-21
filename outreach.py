@@ -19,24 +19,37 @@ from email.utils import make_msgid
 from pathlib import Path
 from urllib.parse import quote
 
-from common import load_env, read_csv, write_csv
+from common import load_env, read_csv, slugify, write_csv
 
 LOG_FIELDS = ["id", "channel", "to", "sent_at"]
+MOCKUPS = Path("maquettes")  # built by the /prospection-maquette skill, one folder per lead
 
-# Why we are reaching out, per website_status from lead_finder.py.
+# What a customer finds when they google the business, per website_status from lead_finder.py.
+# Read after "J'ai cherché {name} sur Google. Résultat : …"
 PROBLEM = {
-    "none": "je n'ai pas trouvé de site internet pour {name}",
-    "social_only": "{name} n'est présent que sur les réseaux sociaux, sans vrai site",
-    "dead": "le site de {name} ne semble plus accessible",
-    "free_builder": "le site de {name} est hébergé sur une plateforme gratuite, ce qui nuit à sa visibilité",
-    "audited": "le site de {name} mériterait d'être modernisé",
+    "none": "aucun site internet",
+    "social_only": "une page Instagram ou Facebook, mais pas de vrai site",
+    "dead": "un site qui ne s'affiche plus",
+    "free_builder": "un site sur une plateforme gratuite, qui fait amateur",
+    "audited": "un site qui a mal vieilli",
 }
+
+
+def mockup_url(lead: dict) -> str:
+    """Link to the lead's mockup, '' if none was built. Local file link until MOCKUP_BASE_URL is set."""
+    slug = slugify(lead["name"])
+    page = MOCKUPS / slug / "index.html"
+    if not page.exists():
+        return ""
+    base = os.getenv("MOCKUP_BASE_URL", "").rstrip("/")
+    return f"{base}/{slug}/" if base else page.resolve().as_uri()
 
 
 def render(template: str, lead: dict) -> str:
     values = {k: (v or "") for k, v in lead.items()}
     # The audit team's pitch is specific to the site; fall back to the generic sentence per status.
-    values["problem"] = lead.get("pitch") or PROBLEM.get(lead.get("website_status", ""), "").format(name=lead["name"])
+    values["problem"] = lead.get("pitch") or PROBLEM.get(lead.get("website_status", ""), "")
+    values["maquette"] = mockup_url(lead)
     values["sender_name"] = os.getenv("SENDER_NAME", "")
     values["sender_site"] = os.getenv("SENDER_SITE", "")
     values["sender_phone"] = os.getenv("SENDER_PHONE", "")
@@ -113,6 +126,15 @@ def main():
     args = parser.parse_args()
 
     leads = [l for l in read_csv(args.leads) if int(l.get("score") or 0) >= args.min_score]
+    # Every message links to the lead's mockup: no mockup, no message.
+    no_mockup = [l["name"] for l in leads if not mockup_url(l)]
+    leads = [l for l in leads if mockup_url(l)]
+    if no_mockup:
+        print(f"{len(no_mockup)} lead(s) skipped, no mockup yet (/prospection-maquette <nom>): "
+              + ", ".join(no_mockup))
+    if args.send and leads and not os.getenv("MOCKUP_BASE_URL"):
+        raise SystemExit("Set MOCKUP_BASE_URL in .env (where maquettes/ is published) before sending: "
+                         "prospects can't open a local file link.")
     log = read_csv("sent_log.csv")
     done = {(r["id"], r["channel"]) for r in log}
     optout = load_optout()

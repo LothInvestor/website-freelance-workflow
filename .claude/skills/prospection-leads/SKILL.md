@@ -40,7 +40,7 @@ ressemble à un modèle Wix/Jimdo de 2012, contenu manifestement abandonné.
 Un site simple mais propre n'est **pas** daté. En cas de doute, ne le promeus pas.
 
 - Daté → `python review.py promote <id> --pitch "<phrase>" --quality <0-60>`
-  La phrase suit « j'ai remarqué que … » et commence par « le site de <nom> » : concrète (ce que tu
+  La phrase suit « J'ai cherché <nom> sur Google. Résultat : … » et commence par « le site de <nom> » : concrète (ce que tu
   as vu), polie, sans jargon, 30 mots max. Ex. : « le site de Garage Martin a un design des années 2000,
   avec un texte très petit et des photos floues ».
 - Correct → regroupe les ids et lance `python review.py dismiss <id> <id> ...` à la fin.

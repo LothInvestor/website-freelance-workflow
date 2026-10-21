@@ -1,15 +1,16 @@
-Subject: Un site internet pour {name} ?
+Subject: {name}, j'ai créé votre site
 Bonjour,
 
-En cherchant des {category} à {city} sur Google Maps, j'ai remarqué que {problem}.
+J'ai cherché {name} sur Google. Résultat : {problem}.
 
-Aujourd'hui, la majorité des clients vérifient un commerce en ligne avant de se déplacer ou d'appeler. Je crée des sites simples, rapides et adaptés au mobile pour les commerces et artisans locaux, livrés en quelques jours.
+Vos clients font la même recherche, tous les jours. Ceux qui ne vous trouvent pas poussent la porte d'à côté.
 
-Je peux vous préparer une maquette gratuite de la page d'accueil de {name}, sans engagement. Ça vous intéresse ?
+Alors j'ai créé votre site. Le voici :
+{maquette}
 
-Bonne journée,
-{sender_name}
-{sender_site} · {sender_phone}
+Il ne manque que vos photos et vos horaires. Répondez à ce mail ou appelez-moi : il est en ligne dans la semaine.
+
+{sender_name} · {sender_phone}
 
 --
-Vous recevez ce message car votre établissement est référencé publiquement sur Google Maps. Pour ne plus être contacté, répondez simplement « STOP ».
+Vous recevez ce message car {name} est référencé publiquement sur Google Maps. Répondez STOP pour ne plus être contacté.
