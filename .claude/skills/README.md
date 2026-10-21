@@ -10,6 +10,7 @@ Two families, named `<famille>-<rôle>` in French:
 |---|---|---|---|---|
 | `prospection-leads` | Recherche, audit, revue visuelle des sites | Ce projet | `leads` | — |
 | `prospection-envoi` | Relecture des accroches, envoi après confirmation | Ce projet | `prospecter` | — |
+| `prospection-maquette` | Chef d'orchestre des `site-*` : maquette d'une page pour un lead | Ce projet | — | — |
 | `site-contenu` | Capturer le style et le contenu d'un site existant (Bright Data Web Unlocker) | Bright Data plugin | `design-mirror` | MIT — `_licenses/brightdata-MIT.txt` |
 | `site-identite` | Identité de marque, positionnement | ECC (affaan-m) | `brand-discovery` | MIT — `_licenses/ecc-MIT.txt` |
 | `site-ton` | Ton et style d'écriture | ECC | `brand-voice` | MIT — `_licenses/ecc-MIT.txt` |

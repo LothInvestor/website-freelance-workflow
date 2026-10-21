@@ -1,12 +1,13 @@
 """
-Compact helpers for the human/Claude review steps (used by the /prospection-leads and /prospection-envoi skills).
-Prints one short line per lead so a review costs few tokens.
+Compact helpers for the human/Claude review steps (used by the /prospection-leads, /prospection-envoi
+and /prospection-maquette skills). Prints one short line per lead so a review costs few tokens.
 
   python review.py list                          # sites waiting for a visual check
   python review.py promote <id> --pitch "..."    # site looks dated → move it into leads.csv
   python review.py dismiss <id> [<id> ...]       # site looks fine → never queue it again
   python review.py pitches [--limit 30]          # leads not contacted yet, with their pitch
   python review.py set-pitch <id> "..."          # rewrite a lead's pitch
+  python review.py show <id|nom>                 # one lead's details (for a mockup)
 """
 
 import argparse
@@ -80,6 +81,19 @@ def cmd_set_pitch(args) -> None:
     raise SystemExit(f"{args.id} not in {LEADS_CSV}")
 
 
+def cmd_show(args) -> None:
+    """One lead's non-empty fields, matched by id or by a piece of its name."""
+    needle = args.lead.lower()
+    matches = [l for l in read_csv(LEADS_CSV) if l["id"] == args.lead or needle in l["name"].lower()]
+    if len(matches) != 1:
+        for l in matches:
+            print(f"{l['id']} | {l['name']}")
+        raise SystemExit(f"{len(matches)} leads match {args.lead!r}: use the id")
+    for k, v in matches[0].items():
+        if v:
+            print(f"{k}: {v}")
+
+
 def main():
     load_env()
     parser = argparse.ArgumentParser(description="Lead review helpers")
@@ -100,6 +114,9 @@ def main():
     p.add_argument("id")
     p.add_argument("pitch")
     p.set_defaults(func=cmd_set_pitch)
+    p = sub.add_parser("show")
+    p.add_argument("lead", help="Lead id or part of its name")
+    p.set_defaults(func=cmd_show)
     args = parser.parse_args()
     args.func(args)
 

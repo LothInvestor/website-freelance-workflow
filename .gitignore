@@ -7,3 +7,4 @@ whatsapp.html
 *.ndjson
 gmaps*.json
 __pycache__/
+maquettes/

@@ -59,13 +59,14 @@ use it on leads that already passed the basic filter.
 
 ## Using it with Claude Code (recommended)
 
-The project ships two `prospection-*` Claude Code skills that split the work 50/50: the scripts do the repetitive part
+The project ships three `prospection-*` Claude Code skills that split the work 50/50: the scripts do the repetitive part
 (free, fast), Claude only steps in where judgment matters.
 
 | Command | Scripts do | Claude does |
 |---|---|---|
 | `/prospection-leads boulangerie Lyon` | Google Maps search, basic audit, scoring, dedup | Opens the sites that passed the technical checks in its browser (one small screenshot each), promotes the ones that *look* dated with a specific pitch |
 | `/prospection-envoi 20` | Renders messages, sends emails over SMTP, logs every send, builds `whatsapp.html` | Proofreads the pitches, shows you a preview, **sends nothing until you say yes** |
+| `/prospection-maquette Le Pain des Jacobins` | `review.py show` fetches the lead | Runs the `site-*` team step by step (brief, structure, type, colour, build, quality checks) and checks the page at 375 and 1280 px. Writes `maquettes/<slug>/` (git-ignored), using only real facts — the rest is marked « à confirmer » |
 
 Sites that score "correct" in the basic audit go to `review.csv` instead of being dropped. `review.py`
 prints them one line each, so the review stays cheap:
@@ -76,6 +77,7 @@ python review.py promote <id> --pitch "..."   # looks dated → into leads.csv
 python review.py dismiss <id> ...             # looks fine → never queued again
 python review.py pitches                      # leads not contacted yet + their pitch
 python review.py set-pitch <id> "..."         # rewrite a pitch
+python review.py show <id|nom>                # one lead's details
 ```
 
 You can do the review yourself with the same commands. The scripts work without Claude.
@@ -155,6 +157,6 @@ prospect-pilot/
 
 ## Next steps
 
-- Generate a free mockup page per lead and link it in the message
+- Publish mockups (e.g. Netlify) and link them in the message
 - Follow-up email after N days without a reply
 - Track replies (IMAP) and update lead status
