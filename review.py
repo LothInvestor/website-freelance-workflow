@@ -1,5 +1,5 @@
 """
-Compact helpers for the human/Claude review steps (used by the /leads and /prospecter skills).
+Compact helpers for the human/Claude review steps (used by the /prospection-leads and /prospection-envoi skills).
 Prints one short line per lead so a review costs few tokens.
 
   python review.py list                          # sites waiting for a visual check

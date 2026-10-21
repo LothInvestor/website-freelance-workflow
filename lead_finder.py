@@ -200,7 +200,7 @@ def main():
     print(f"  +{len(new)} new leads (score >= {args.min_score}), {len(merged)} total")
 
     # Sites that pass the technical checks can still look dated: queue them for a visual review
-    # (by Claude via the /leads skill, or by you — see review.py).
+    # (by Claude via the /prospection-leads skill, or by you — see review.py).
     to_review = [dict(l, review="pending") for l in leads
                  if l["website_status"] == "audited" and l["score"] < args.min_score and l["id"] not in known]
     if to_review:

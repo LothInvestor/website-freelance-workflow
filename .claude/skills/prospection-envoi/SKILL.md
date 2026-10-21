@@ -1,10 +1,10 @@
 ---
-name: prospecter
-description: Relit les accroches des leads, montre un aperçu des messages, puis envoie les emails (SMTP) et prépare les liens WhatsApp après confirmation explicite de l'utilisateur. Utiliser quand l'utilisateur veut contacter ses prospects, par ex. "/prospecter 20".
+name: prospection-envoi
+description: Relit les accroches des leads, montre un aperçu des messages, puis envoie les emails (SMTP) et prépare les liens WhatsApp après confirmation explicite de l'utilisateur. Utiliser quand l'utilisateur veut contacter ses prospects, par ex. "/prospection-envoi 20".
 argument-hint: "[nombre max, défaut 20] [email|whatsapp|both]"
 ---
 
-# /prospecter — relire puis envoyer
+# /prospection-envoi — relire puis envoyer
 
 Tout se lance depuis la racine du projet. Réponds à l'utilisateur en français.
 **Rien n'est envoyé sans un « oui » explicite de l'utilisateur dans le chat, pour cet envoi-là.**

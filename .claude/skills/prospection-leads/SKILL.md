@@ -1,10 +1,10 @@
 ---
-name: leads
-description: Trouve des commerces locaux qui ont besoin d'un site web (recherche Google Maps via Bright Data + audit automatique), puis fait la revue visuelle des sites douteux dans le navigateur. Utiliser quand l'utilisateur veut chercher de nouveaux prospects, par ex. "/leads boulangerie Lyon".
+name: prospection-leads
+description: Trouve des commerces locaux qui ont besoin d'un site web (recherche Google Maps via Bright Data + audit automatique), puis fait la revue visuelle des sites douteux dans le navigateur. Utiliser quand l'utilisateur veut chercher de nouveaux prospects, par ex. "/prospection-leads boulangerie Lyon".
 argument-hint: "<recherche> [nombre]  ou  --from-file <export.json>"
 ---
 
-# /leads — trouver et qualifier des prospects
+# /prospection-leads — trouver et qualifier des prospects
 
 Workflow 50/50 : les scripts font le travail répétitif (gratuit en tokens), tu n'interviens que là où
 ton jugement compte : les sites techniquement corrects qui ont peut-être un design daté.
@@ -50,4 +50,4 @@ Un site simple mais propre n'est **pas** daté. En cas de doute, ne le promeus p
 Lance `python review.py pitches --limit 15` et présente à l'utilisateur :
 - combien de nouveaux leads (sans site / site faible / promus après revue visuelle) ;
 - un tableau court : nom, score, canal (email / wa), accroche ;
-- la suite : `/prospecter` pour relire et envoyer les messages.
+- la suite : `/prospection-envoi` pour relire et envoyer les messages.
