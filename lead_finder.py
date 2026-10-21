@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
@@ -45,10 +46,16 @@ def run_bdata(query: str, limit: int) -> list[dict]:
         )
     with tempfile.TemporaryDirectory() as tmp:
         out = os.path.join(tmp, "gmaps.json")
-        cmd = ["bdata", "pipelines", "run", dataset, method, f"--{field}", query,
-               "--limit-per-input", str(limit), "--format", "json", "--timeout", "1800", "-o", out]
+        # shutil.which finds bdata.cmd on Windows (npm shim), which subprocess can't resolve alone
+        bdata = shutil.which("bdata") or "bdata"
+        cmd = [bdata, "pipelines", "run", dataset, method, f"--{field}", query]
+        if os.getenv("BRIGHTDATA_COUNTRY"):
+            cmd += ["--country", os.environ["BRIGHTDATA_COUNTRY"]]
+        cmd += ["--limit-per-input", str(limit), "--format", "json", "--timeout", "1800", "-o", out]
         print("  $", " ".join(cmd))
-        subprocess.run(cmd, check=True)
+        if subprocess.run(cmd).returncode != 0:
+            raise SystemExit("bdata failed (see its error above). \"Customer is not active\" means the "
+                             "Bright Data account needs activating (billing) in the dashboard.")
         return load_records(out)
 
 
